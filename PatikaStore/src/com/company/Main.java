@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Brands brands = new Brands(1,new String());
-        brands.getBrandsName();
+        PatikaStore patikaStore = new PatikaStore();
+        patikaStore.start();
     }
 }
