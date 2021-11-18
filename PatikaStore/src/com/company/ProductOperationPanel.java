@@ -27,6 +27,7 @@ public class ProductOperationPanel {
         listNoteBook(noteBookList);
     }
     private void listNoteBook(ArrayList<NotebookProcess> noteBookList) {
+
         String leftAlignFormat = "| %-2d | %-20s | %-11s | %-9s | %-10d | %-9s | %-9s |%n";
         String headers = "| %-2s | %-20s | %-11s | %-9s | %-10s | %-9s | %-9s |%n";
         System.out.println("--------------------------------------------------------------------------------------------\n");
@@ -43,19 +44,20 @@ public class ProductOperationPanel {
     public void listByNotebookId(int id) {
         String leftAlignFormat = "| %-2d | %-20s | %-11s | %-9s | %-10d | %-9s | %-9s |%n";
         String headers = "| %-2s | %-20s | %-11s | %-9s | %-10s | %-9s | %-9s |%n";
-
         System.out.println("--------------------------------------------------------------------------------------------\n");
-        System.out.format(headers, "ID", "Product Name", "Price", "Brand", "Storage", "Screen", "RAM");
+        System.out.format(headers, "ID", "Ürün Adı", "Fiyat", "Marka ", "Depolama", "Ekran", "RAM");
         System.out.println("--------------------------------------------------------------------------------------------\n");
 
-        for (NotebookProcess product : noteBookList) {
+        Iterator<NotebookProcess> iterator = noteBookList.iterator();
+        while(iterator.hasNext())
+        {
+            NotebookProcess product = iterator.next();
             if (product.getId() == id)
             {
-                System.out.format(leftAlignFormat, product.getId(), product.getProductName(), product.getPrice(), product.getBrand(),
-                        product.getMemory(), product.getScreenSize(),  product.getRam());
+                System.out.format(leftAlignFormat, product.getId(), product.getProductName(), product.getPrice(), product.getBrand(), product.getMemory(), product.getScreenSize(),
+                       product.getRam());
                 break;
             }
-
         }
     }
 
@@ -63,21 +65,18 @@ public class ProductOperationPanel {
     {
         String leftAlignFormat = "| %-2d | %-20s | %-11s | %-9s | %-10d | %-9s | %-9s |%n";
         String headers = "| %-2s | %-20s | %-11s | %-9s | %-10s | %-9s | %-9s |%n";
-
         System.out.println("--------------------------------------------------------------------------------------------\n");
-        System.out.format(headers, "ID", "Product Name", "Price", "Brand", "Storage", "Screen", "RAM");
+        System.out.format(headers, "ID", "Ürün Adı", "Fiyat", "Marka ", "Depolama", "Ekran", "RAM");
         System.out.println("--------------------------------------------------------------------------------------------\n");
-
 
         Iterator<NotebookProcess> iterator = noteBookList.iterator();
         while(iterator.hasNext())
         {
-            NotebookProcess n = iterator.next();
-            String b = n.getBrand();
+            NotebookProcess product = iterator.next();
+            String b = product.getBrand();
             if (b.equalsIgnoreCase(brandN))
             {
-                System.out.format(leftAlignFormat, n.getId(), n.getProductName(), n.getPrice(), n.getBrand(),
-                        n.getMemory(), n.getScreenSize(),  n.getRam());
+                System.out.format(leftAlignFormat, product.getId(), product.getProductName(), product.getPrice(), product.getBrand(), product.getMemory(), product.getScreenSize(),product.getRam());
             }
         }
 
@@ -132,43 +131,41 @@ public class ProductOperationPanel {
     }
 
     public void listByPhoneId(int id) {
-        String leftAlignFormat = "| %-2d | %-20s | %-11s | %-9s | %-10d | %-9s | %-9s | %-9s | %-5d | %-8s |%n";
-        String headers = "| %-2s | %-20s | %-11s | %-9s | %-10s | %-9s | %-9s | %-9s | %-5s | %-8s |%n";
-
+        String leftAlignFormat = "| %-2d | %-20s | %-11s | %-9s | %-10d | %-9s | %-9s | %-9s | %-5d |%n";
+        String headers = "| %-2s | %-20s | %-11s | %-9s | %-10s | %-9s | %-9s | %-9s | %-5s |%n";
         System.out.println("--------------------------------------------------------------------------------------------\n");
-        System.out.format(headers, "ID", "Product Name", "Price", "Brand", "Storage", "Screen", "RAM");
-        System.out.println("--------------------------------------------------------------------------------------------\n");
-
-        for (PhoneProcess product : phoneList) {
+        System.out.format(headers, "ID","Ürün Adı", "Fiyat",  "Marka", "Depolama", "Ekran","Renk", "Pil","RAM" );
+        System.out.println("------------------------------------------------------------------------------------------------------\n");
+        Iterator<PhoneProcess> iterator = phoneList.iterator();
+        while(iterator.hasNext())
+        {
+            PhoneProcess product = iterator.next();
             if (product.getId() == id)
             {
-                System.out.format(leftAlignFormat, product.getId(), product.getProductName(), product.getPrice(), product.getBrand(),
-                        product.getMemory(), product.getScreenSize(),  product.getRam());
+                System.out.format(leftAlignFormat, product.getId(), product.getProductName(), product.getPrice(), product.getBrand(), product.getMemory(), product.getScreenSize(),
+                        product.getColor(),product.getBatteryPower(),product.getRam());
                 break;
             }
-
         }
     }
 
     public void listByPhoneBrand(String brandP)
     {
-        String leftAlignFormat = "| %-2d | %-20s | %-11s | %-9s | %-10d | %-9s | %-9s |%n";
-        String headers = "| %-2s | %-20s | %-11s | %-9s | %-10s | %-9s | %-9s |%n";
-
+        String leftAlignFormat = "| %-2d | %-20s | %-11s | %-9s | %-10d | %-9s | %-9s | %-9s | %-5d |%n";
+        String headers = "| %-2s | %-20s | %-11s | %-9s | %-10s | %-9s | %-9s | %-9s | %-5s |%n";
         System.out.println("--------------------------------------------------------------------------------------------\n");
-        System.out.format(headers, "ID", "Product Name", "Price", "Brand", "Storage", "Screen", "RAM");
-        System.out.println("--------------------------------------------------------------------------------------------\n");
-
+        System.out.format(headers, "ID","Ürün Adı", "Fiyat",  "Marka", "Depolama", "Ekran","Renk", "Pil","RAM" );
+        System.out.println("------------------------------------------------------------------------------------------------------\n");
 
         Iterator<PhoneProcess> iterator = phoneList.iterator();
         while(iterator.hasNext())
         {
-            PhoneProcess n = iterator.next();
-            String b = n.getBrand();
+            PhoneProcess product = iterator.next();
+            String b = product.getBrand();
             if (b.equalsIgnoreCase(brandP))
             {
-                System.out.format(leftAlignFormat, n.getId(), n.getProductName(), n.getPrice(), n.getBrand(),
-                        n.getMemory(), n.getScreenSize(),  n.getRam());
+                System.out.format(leftAlignFormat, product.getId(), product.getProductName(), product.getPrice(), product.getBrand(), product.getMemory(), product.getScreenSize(),
+                        product.getColor(),product.getBatteryPower(),product.getRam());
             }
         }
 
