@@ -1,16 +1,33 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class User {
 
-    private String userName, userLastName, userEmail, userCareer;
-    private int userPassword, userAge;
+    private String userName, userLastName, userEmail, userCareer,userPassword;
+    private int userAge;
     private Date lastLoginDate ;
     ArrayList<String> addressList = new ArrayList<>();
 
-    public User(String userName, String userLastName, String userEmail, String userCareer, int userPassword, int userAge, Date lastLoginDate) {
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public ArrayList<String> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(ArrayList<String> addressList) {
+        this.addressList = addressList;
+    }
+
+    public User(String userName, String userLastName, String userEmail, String userCareer, String userPassword, int userAge, Date lastLoginDate) {
         this.userName = userName;
         this.userLastName = userLastName;
         this.userEmail = userEmail;
@@ -53,13 +70,6 @@ public class User {
         this.userCareer = userCareer;
     }
 
-    public int getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(int userPassword) {
-        this.userPassword = userPassword;
-    }
 
     public int getUserAge() {
         return userAge;
@@ -76,5 +86,6 @@ public class User {
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
     }
+
 
 }
