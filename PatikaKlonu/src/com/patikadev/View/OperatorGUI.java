@@ -3,11 +3,11 @@ import com.patikadev.Helper.*;
 import com.patikadev.Model.Operator;
 import com.patikadev.Model.User;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 public class OperatorGUI extends JFrame{
@@ -28,6 +28,10 @@ public class OperatorGUI extends JFrame{
     private JButton btn_userAdd;
     private JTextField fld_user_id;
     private JButton btn_user_delete;
+    private JTextField fld_search_username;
+    private JTextField fld_search_userNickname;
+    private JComboBox cmb_search_type;
+    private JButton btn_search_user;
 
     private DefaultTableModel mdl_userList;
     private Object[] row_userList;
@@ -77,6 +81,22 @@ public class OperatorGUI extends JFrame{
             }
         });
 
+        tbl_userList.getModel().addTableModelListener(e -> {
+            if(e.getType() == TableModelEvent.UPDATE){
+                int id= Integer.parseInt(tbl_userList.getValueAt(tbl_userList.getSelectedRow(),0).toString());
+                String user_name= tbl_userList.getValueAt(tbl_userList.getSelectedRow(),1).toString();
+                String user_nickname= tbl_userList.getValueAt(tbl_userList.getSelectedRow(),2).toString();
+                String password= tbl_userList.getValueAt(tbl_userList.getSelectedRow(),3).toString();
+                String type= tbl_userList.getValueAt(tbl_userList.getSelectedRow(),4).toString();
+
+                if (User.updateFunction(id, user_name, user_nickname,password,type)){
+                    Helper.showMessage("success");
+                }
+                loadUserModel();
+            }
+
+        });
+
         btn_userAdd.addActionListener(e -> {
             if (Helper.isFieldEmpty(fld_userName) || Helper.isFieldEmpty(fld_user_Nickname) || Helper.isFieldEmpty(fld_password)) {
                 Helper.showMessage("fill");
@@ -100,7 +120,7 @@ public class OperatorGUI extends JFrame{
                 Helper.showMessage("fill");
             }else{
                 int userId = Integer.parseInt(fld_user_id.getText());
-                if (User.deleteFuncition(userId)){
+                if (User.deleteFunction(userId)){
                     Helper.showMessage("success");
                     loadUserModel();
                 }else {
@@ -109,12 +129,21 @@ public class OperatorGUI extends JFrame{
 
             }
         });
+        btn_search_user.addActionListener(e -> {
+            String user_name = fld_search_username.getText();
+            String user_nickname=fld_search_userNickname.getText();
+            String type=cmb_search_type.getSelectedItem().toString();
+            String query =User.searchQuery(user_name,user_nickname,type);
+            loadUserModel(User.searchUserList(query));
+        });
+        btn_exit.addActionListener(e -> {
+            dispose();
+        });
     }
 
     public void loadUserModel(){
             DefaultTableModel clearModel = (DefaultTableModel)  tbl_userList.getModel();
             clearModel.setRowCount(0);
-
             for (User obj : User.getList()) {
                 int i = 0;
                 row_userList[i++] = obj.getId();
@@ -124,6 +153,20 @@ public class OperatorGUI extends JFrame{
                 row_userList[i++] = obj.getType();
                 mdl_userList.addRow(row_userList);
             }
+    }
+
+    public void loadUserModel(ArrayList<User> list){
+        DefaultTableModel clearModel = (DefaultTableModel)  tbl_userList.getModel();
+        clearModel.setRowCount(0);
+        for (User obj : list) {
+            int i = 0;
+            row_userList[i++] = obj.getId();
+            row_userList[i++] = obj.getUser_name();
+            row_userList[i++] = obj.getUser_nickname();
+            row_userList[i++] = obj.getPassword();
+            row_userList[i++] = obj.getType();
+            mdl_userList.addRow(row_userList);
+        }
     }
 
 }

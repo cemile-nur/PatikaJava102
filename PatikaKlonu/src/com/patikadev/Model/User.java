@@ -137,7 +137,7 @@ public class User {
         return obj;
     }
 
-    public static boolean deleteFuncition(int id){
+    public static boolean deleteFunction(int id){
         String query = "DELETE FROM user WHERE id = ?";
         try {
             PreparedStatement pr =DBConnector.getInstance().prepareStatement(query);
@@ -149,5 +149,56 @@ public class User {
 
         return true;
     }
+    public  static boolean updateFunction( int id, String user_name, String user_nickname, String password, String type){
+        String query = "UPDATE user SET user_name =?, user_nickname=?, password=?, type=? WHERE id=?";
+        User findUser= User.getFetch(user_nickname);
+        if(findUser != null && findUser.getId() != id){
+            Helper.showMessage("Bu kullanıcı adı kullanılamaz !");
+            return false;
+        }
+        try {
+            PreparedStatement pr = DBConnector.getInstance().prepareStatement(query);
+            pr.setString(1,user_name);
+            pr.setString(2,user_nickname);
+            pr.setString(3,password);
+            pr.setString(4,type);
+            pr.setInt(5,id);
+            return pr.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 
+    public static ArrayList<User> searchUserList(String query){
+        ArrayList<User> userList = new ArrayList<>();
+        User object;
+        try {
+            Statement st = DBConnector.getInstance().createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()){
+                object = new User();
+                object.setId(rs.getInt("id"));
+                object.setUser_name(rs.getString("user_name"));
+                object.setUser_nickname(rs.getString("user_nickname"));
+                object.setPassword(rs.getString("password"));
+                object.setType(rs.getString("type"));
+                userList.add(object);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return userList;
+    }
+
+    public static String searchQuery( String user_name, String user_nickname, String type){
+        String query = "SELECT * FROM user WHERE user_nickname LIKE '%{{user_nickname}}%' AND user_name LIKE '%{{user_name}}%'";
+        query =query.replace("{{user_nickname}}",user_nickname);
+        query =query.replace("{{user_name}}",user_name);
+        if (!type.isEmpty()){
+            query += "AND type='{{type}}'";
+            query =query.replace("{{type}}",type);
+        }
+        return query;
+    }
 }
