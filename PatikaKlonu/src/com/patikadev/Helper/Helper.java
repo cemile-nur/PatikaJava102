@@ -58,10 +58,38 @@ public class Helper {
         }
         JOptionPane.showMessageDialog(null,message,title,JOptionPane.INFORMATION_MESSAGE);
     }
+    
 
     public static void optionPaneTR(){
         UIManager.put("OptionPane.okButtonText","Tamam");
+        UIManager.put("OptionPane.yesButtonText", "Evet");
+        UIManager.put("OptionPane.noButtonText", "Hayır");
     }
 
 
+    public static boolean confirm(String str) {
+        optionPaneTR();
+        String msg;
+        switch (str){
+            case "sure":
+                msg= "Bu işlemi gerçekleştirmek istediğinizden emin misiniz?";
+                break;
+            default:
+                msg=str;
+        }
+        return JOptionPane.showConfirmDialog(null,msg,"Son kararın mı?",JOptionPane.YES_NO_OPTION) == 0;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
