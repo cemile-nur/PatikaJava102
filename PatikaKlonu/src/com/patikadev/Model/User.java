@@ -66,9 +66,9 @@ public class User {
         this.type = type;
     }
 
-    public static ArrayList<User> getList(){
+    public static ArrayList<User> getListOnlyEducator(){
         ArrayList<User> userList = new ArrayList<>();
-        String query = "SELECT * From user";
+        String query = "SELECT * From user WHERE type= 'educator' ";
         User object;
         try {
             Statement st = DBConnector.getInstance().createStatement();

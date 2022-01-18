@@ -179,7 +179,7 @@ public class OperatorGUI extends JFrame{
         Object[] col_courseList = {"ID", "Ders Adı","Programlama Dili","Patika","Eğitmen"};
         mdl_courseList.setColumnIdentifiers(col_courseList);
         row_courseList = new Object[col_courseList.length];
-        loadCourseList();
+        loadCourseModel();
 
         tbl_courseList.setModel(mdl_courseList);
         tbl_courseList.getColumnModel().getColumn(0).setMaxWidth(75);
@@ -251,6 +251,23 @@ public class OperatorGUI extends JFrame{
                 }
             }
         });
+
+        //Kurs ekleme butonu
+        btn_courseAdd.addActionListener(e -> {
+            Item patikaItem = (Item) cmb_coursePatika.getSelectedItem();
+            Item userItem = (Item) cmb_courseUser.getSelectedItem();
+            if(Helper.isFieldEmpty(fld_courseName) || Helper.isFieldEmpty(fld_courseLanguage)){
+                Helper.showMessage("fill");
+            }else{
+                if(Course.add(userItem.getKey(), patikaItem.getKey(), fld_courseName.getText(),fld_courseLanguage.getText())){
+                    Helper.showMessage("success");
+                    loadCourseModel();
+                }else{
+                    Helper.showMessage("error");
+                }
+            }
+
+        });
     }
 
 
@@ -263,14 +280,14 @@ public class OperatorGUI extends JFrame{
 
     public void loadEducatorCombo(){
         cmb_courseUser.removeAllItems();
-        for (User obj: User.getList()){
-            if (obj.getType().equals("Educator")){
-                cmb_courseUser.addItem(new Item(obj.getId(), obj.getUser_name()));
-            }
+        for (User obj: User.getListOnlyEducator()){
+
+            cmb_courseUser.addItem(new Item(obj.getId(), obj.getUser_name()));
+
         }
     }
 
-    private void loadCourseList() {
+    private void loadCourseModel() {
         DefaultTableModel clearModel = (DefaultTableModel) tbl_courseList.getModel();
         clearModel.setRowCount(0);
         int i =0;
@@ -301,7 +318,7 @@ public class OperatorGUI extends JFrame{
             DefaultTableModel clearModel = (DefaultTableModel)  tbl_userList.getModel();
             clearModel.setRowCount(0);
             int i=0;
-            for (User obj : User.getList()) {
+            for (User obj : User.getListOnlyEducator()) {
                  i = 0;
                 row_userList[i++] = obj.getId();
                 row_userList[i++] = obj.getUser_name();
