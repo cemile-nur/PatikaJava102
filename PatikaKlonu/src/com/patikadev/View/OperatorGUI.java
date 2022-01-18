@@ -87,7 +87,7 @@ public class OperatorGUI extends JFrame{
         mdl_userList.setColumnIdentifiers(col_UserList);
 
         row_userList = new Object[col_UserList.length];
-        loadUserModel();
+        loadUser();
 
 
         tbl_userList.setModel(mdl_userList);
@@ -115,8 +115,9 @@ public class OperatorGUI extends JFrame{
                     Helper.showMessage("success");
                 }
                 loadUserModel();
+                loadEducatorCombo();
+                loadCourseModel();
             }
-
         });
 
 
@@ -135,6 +136,7 @@ public class OperatorGUI extends JFrame{
                 public void windowClosed(WindowEvent e) {
                     loadPatikaModel();
                     loadPatikaCombo();
+                    loadCourseModel();
                 }
             });
         });
@@ -146,6 +148,7 @@ public class OperatorGUI extends JFrame{
                     Helper.showMessage("success");
                     loadPatikaModel();
                     loadPatikaCombo();
+                    loadCourseModel();
                 }else{
                     Helper.showMessage("error");
                 }
@@ -202,6 +205,7 @@ public class OperatorGUI extends JFrame{
                 if (User.add(user_name, user_nickname, password, type)) {
                     Helper.showMessage("success");
                     loadUserModel();
+                    loadEducatorCombo();
                     fld_userName.setText(null);
                     fld_user_Nickname.setText(null);
                     fld_password.setText(null);
@@ -219,6 +223,9 @@ public class OperatorGUI extends JFrame{
                     if (User.deleteFunction(userId)){
                         Helper.showMessage("success");
                         loadUserModel();
+                        loadEducatorCombo();
+                        loadCourseModel();
+                        fld_user_id.setText(null);
                     }else {
                         Helper.showMessage("error");
                     }
@@ -262,6 +269,8 @@ public class OperatorGUI extends JFrame{
                 if(Course.add(userItem.getKey(), patikaItem.getKey(), fld_courseName.getText(),fld_courseLanguage.getText())){
                     Helper.showMessage("success");
                     loadCourseModel();
+                    fld_courseLanguage.setText(null);
+                    fld_courseName.setText(null);
                 }else{
                     Helper.showMessage("error");
                 }
@@ -327,6 +336,21 @@ public class OperatorGUI extends JFrame{
                 row_userList[i++] = obj.getType();
                 mdl_userList.addRow(row_userList);
             }
+    }
+
+    public void loadUser(){
+        DefaultTableModel clearModel = (DefaultTableModel)  tbl_userList.getModel();
+        clearModel.setRowCount(0);
+        int i=0;
+        for (User obj : User.getList()) {
+            i = 0;
+            row_userList[i++] = obj.getId();
+            row_userList[i++] = obj.getUser_name();
+            row_userList[i++] = obj.getUser_nickname();
+            row_userList[i++] = obj.getPassword();
+            row_userList[i++] = obj.getType();
+            mdl_userList.addRow(row_userList);
+        }
     }
 
     public void loadUserModel(ArrayList<User> list){

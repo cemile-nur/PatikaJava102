@@ -88,6 +88,30 @@ public class User {
         return userList;
     }
 
+    public static ArrayList<User> getList(){
+        ArrayList<User> userList = new ArrayList<>();
+        String query = "SELECT * From user ";
+        User object;
+        try {
+            Statement st = DBConnector.getInstance().createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                object = new User();
+                object.setId(rs.getInt("id"));
+                object.setUser_name(rs.getString("user_name"));
+                object.setUser_nickname(rs.getString("user_nickname"));
+                object.setPassword(rs.getString("password"));
+                object.setType(rs.getString("type"));
+                userList.add(object);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return userList;
+    }
+
+
     public static boolean add(String user_name , String user_nickname , String password , String type){
         String query = "INSERT INTO user (user_name,user_nickname,password,type) VALUES (?,?,?,?)";
         User findUser= User.getFetch(user_nickname);
@@ -162,6 +186,10 @@ public class User {
     }
     public static boolean deleteFunction(int id){
         String query = "DELETE FROM user WHERE id = ?";
+        ArrayList<Course> courseList = Course.getListByUser(id);
+        for (Course c: courseList){
+            Course.deleteFunction(c.getId());
+        }
         try {
             PreparedStatement pr =DBConnector.getInstance().prepareStatement(query);
             pr.setInt(1,id);
