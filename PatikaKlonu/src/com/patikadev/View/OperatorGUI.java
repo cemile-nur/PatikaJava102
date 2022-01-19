@@ -241,6 +241,7 @@ public class OperatorGUI extends JFrame{
         });
         btn_exit.addActionListener(e -> {
             dispose();
+            LoginGUI login = new LoginGUI();
         });
 
         //Patika Ekleme Butonu

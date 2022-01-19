@@ -161,6 +161,43 @@ public class User {
         return obj;
     }
 
+    public static User getFetch(String user_nickname,String password){
+        User obj = null;
+        String query = "SELECT * FROM user WHERE user_nickname = ? AND password = ?";
+
+        try {
+            PreparedStatement pr = DBConnector.getInstance().prepareStatement(query);
+            pr.setString(1,user_nickname);
+            pr.setString(2,password);
+            ResultSet rs =pr.executeQuery();
+            if(rs.next()){
+                switch (rs.getString("type")){
+                    case "Operator":
+                        obj =new Operator();
+                        break;
+                    case "Educator":
+                        obj =new Educator();
+                        break;
+                    case "Student":
+                        obj =new Student();
+                        break;
+                    default:
+                        obj = new User();
+                }
+                obj.setId(rs.getInt("id"));
+                obj.setUser_name(rs.getString("user_name"));
+                obj.setUser_nickname(rs.getString("user_nickname"));
+                obj.setPassword(rs.getString("password"));
+                obj.setType(rs.getString("type"));
+
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return obj;
+    }
+
     public static User getFetch(int id){
         User obj = null;
         String query = "SELECT * FROM user WHERE id = ?";
@@ -184,6 +221,7 @@ public class User {
         }
         return obj;
     }
+
     public static boolean deleteFunction(int id){
         String query = "DELETE FROM user WHERE id = ?";
         ArrayList<Course> courseList = Course.getListByUser(id);
